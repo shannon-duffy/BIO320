@@ -1,0 +1,10 @@
+#Problem Set 1 Individual
+forearm_length_mm<-c(39.9, 40.9, 40.4, 41.1, 39.9, 41.0, 41.1, 40.7, 41.0, 40.3)
+mean(forearm_length_mm)
+median(forearm_length_mm)
+max(forearm_length_mm) - min(forearm_length_mm)
+sum((forearm_length_mm - mean(forearm_length_mm))^2)/(10-1)
+((39.9-40.63)^2+(40.9-40.63)^2+(40.4-40.63)^2+(41.1-40.63)^2+(39.9-40.63)^2+(41.0-40.63)^2+(41.1-40.63)^2+(40.7-40.63)^2+(41.0-40.63)^2+(40.3-40.63)^2)/(10-1)
+((39.9-mean(forearm_length_mm))^2+(40.9-mean(forearm_length_mm))^2+(40.4-mean(forearm_length_mm))^2+(41.1-mean(forearm_length_mm))^2+(39.9-mean(forearm_length_mm))^2+(41.0-mean(forearm_length_mm))^2+(41.1-mean(forearm_length_mm))^2+(40.7-mean(forearm_length_mm))^2+(41.0-mean(forearm_length_mm))^2+(40.3-mean(forearm_length_mm))^2)/(10-1)
+sqrt(sum((forearm_length_mm - mean(forearm_length_mm))^2)/(10-1))
+(35+23*2+15*3)/(35+23+15+27)
