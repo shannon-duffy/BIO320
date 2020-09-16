@@ -1,0 +1,155 @@
+---
+title: "Lab 3"
+author: "Shannon Duffy"
+date: "9/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1. The following data are masses (g) of least shrews (Cryptotis parva)
+kept in the lab for studies of nutrition: 5.28, 5.23, 5.15, 7.30, 6.29, 4.86, 6.05, 6.85, 4.75, 6.35, 6.15, 5.50, 6.30, 6.10, 4.05, 6.00, 5.50, 4.80, 5.00, 5.15, 6.78, 6.13, 6.50, 5.10, 7.10, 6.42, 7.42, 5.05, 5.48, 5.25, 4.68, 6.93, 6.13, 5.06, 4.87. For this variable, do the following:
+i. Make an attractive histogram. Do you think there are any unusual observations in this distribution? Explain.
+```{r}
+shrew.mass=c(5.28, 5.23, 5.15, 7.30, 6.29, 4.86, 6.05, 6.85, 4.75, 6.35, 6.15, 5.50, 6.30, 6.10, 4.05, 6.00, 5.50, 4.80, 5.00, 5.15, 6.78, 6.13, 6.50, 5.10, 7.10, 6.42, 7.42, 5.05, 5.48, 5.25, 4.68, 6.93, 6.13, 5.06, 4.87)
+hist(shrew.mass, xlab = "Mass (g)", main = "Mass of Cryptotis parva")
+```
+It seems like there are two separate distributions because of the two peaks and the dip in the distribution in the 5.5 - 6 g range. This could perhaps be due to sexual dimorphism.
+
+ii. Calculate the sample mean
+```{r}
+mean(shrew.mass)
+```
+
+iii. Calculate the sample variance and standard deviation
+```{r}
+var(shrew.mass)
+```
+```{r}
+sd(shrew.mass)
+```
+
+iv. Calculate the sample skew
+```{r}
+library(e1071)
+skewness(shrew.mass)
+```
+
+v. Calculate the sample kurtosis
+```{r}
+kurtosis(shrew.mass)
+```
+
+vi. (Extra computation practice) Use a single R command to take
+the square root of the sum of these numbers.
+```{r}
+sqrt(sum(shrew.mass))
+```
+
+2. Find the data set named sallys.csv at Moodle. This data set includes information for salamanders studied by Ziemba et al. (2016).
+Bring these data into R and complete the following tasks.
+```{r}
+library(dplyr)
+setwd("~/Documents/github/BIO320/BIO320")
+sallys=read.csv("sallys.csv", header = TRUE)
+```
+i. Sort the data set by snout-to-vent length (SVL). Which salamander has the largest SVL? Which has the smallest?
+```{r}
+arrange(sallys, desc(SVL))
+```
+Salamander JSF 86 has the longest snout-to-vent length and JSF 120 has the shortest.
+
+ii. For SVL, do the following for each of male and female salamanders seperately: a. Calculate the mean, b. Calculate the
+standard deviation
+```{r}
+mean(sallys$SVL[sallys$Gender=="F"])
+```
+```{r}
+mean(sallys$SVL[sallys$Gender=="M"])
+```
+```{r}
+sd(sallys$SVL[sallys$Gender=="F"])
+```
+```{r}
+sd(sallys$SVL[sallys$Gender=="M"])
+```
+
+iii. Construct histograms for the mass of each of male and female
+salamanders. Do you think there is sexual dimorphism in this
+species? Explain.
+```{r}
+sal.fem=filter(sallys, Gender=="F")
+hist(sal.fem$SVL, xlab = "Snout-to-Vent Length", main = "Female Salamander Snout-to-Vent Length")
+```
+```{r}
+sal.male=filter(sallys, Gender=="M")
+hist(sal.male$SVL, xlab = "Snout-to-Vent Length", main = "Male Salamander Snout-to-Vent Length")
+```
+There doesn't seem to be huge sexual dimorphism in salamander snout-to-vent length because both sexes peak around 38 cm and are distributed over a similar range. The variance of the females is a little greater than males but not drastically.
+
+iv. Use a single line of R code to determine the number of salamanders that are female, over 0.8 g in mass, and under 40 mm in
+SVL.
+```{r}
+nrow(filter(sallys, Gender=="F", Mass>0.8, SVL<40))
+```
+
+v. Use a single line of R code to sort this dataframe by mass and
+save the sorted dataframe as “sallys.new”.
+```{r}
+sallys.new=arrange(sallys,desc(Mass))
+```
+
+3. Find the data set named bp.csv in the supplemental materials.
+This data set includes blood pressure measurements taken at the
+arm and ankle for 948 patients (Gong et al. 2015). Bring these data into R and complete the following tasks.
+```{r}
+setwd("~/Documents/github/BIO320/BIO320")
+bp=read.csv("bp.csv", header = TRUE)
+```
+
+i. For systolic blood pressure taken at the right arm (variable
+SBPRA), summarize the following for each of male (code=1) and
+female (code=2) patients:
+a. Sample size,
+```{r}
+nrow(filter(bp, Sex=="1"))
+```
+```{r}
+nrow(filter(bp, Sex=="2"))
+```
+
+b. Median, and
+```{r}
+median(bp$SBPRA[bp$Sex=="1"])
+```
+```{r}
+median(bp$SBPRA[bp$Sex=="2"])
+```
+
+c. Interquartile length
+```{r}
+quantile(bp$SBPRA[bp$Sex=="1"], 0.75) - quantile(bp$SBPRA[bp$Sex=="1"], 0.25)
+```
+```{r}
+quantile(bp$SBPRA[bp$Sex=="2"], 0.75) - quantile(bp$SBPRA[bp$Sex=="2"], 0.25)
+```
+
+ii. Construct histograms for the systolic blood pressure taken at the left ankle (variable SBPLN) for each of male and female patients.
+```{r}
+bp.male=filter(bp, Sex=="1")
+hist(bp.male$SBPLN, xlab = "Systolic Blood Pressure Taken at the Left Ankle", main = "Systolic Blood Pressure for Males")
+```
+```{r}
+bp.fem=filter(bp, Sex=="2")
+hist(bp.fem$SBPLN, xlab = "Systolic Blood Pressure Taken at the Left Ankle", main = "Systolic Blood Pressure for Females")
+```
+
+iii. Construct a boxplot comparing the systolic blood pressure
+taken at the left arm (SBPLA) and systolic blood pressure taken
+at the left ankle (SBPLN). How would you characterize any differences that you see?
+```{r}
+boxplot(bp$SBPRA, bp$SBPLN, names = expression("Right Arm", "Left Ankle"), main= "Systolic Blood Pressure", ylab="Systolic Blood Pressure")
+```
+It appears the measurements taken at the left ankle have a higher median and greater variance with potentially more outliers than the measurements taken at the right arm. This indicates that measurements taken at the left ankle are less precise than those taken at the right arm.
