@@ -14,7 +14,7 @@ kept in the lab for studies of nutrition: 5.28, 5.23, 5.15, 7.30, 6.29, 4.86, 6.
 i. Make an attractive histogram. Do you think there are any unusual observations in this distribution? Explain.
 ```{r}
 shrew.mass=c(5.28, 5.23, 5.15, 7.30, 6.29, 4.86, 6.05, 6.85, 4.75, 6.35, 6.15, 5.50, 6.30, 6.10, 4.05, 6.00, 5.50, 4.80, 5.00, 5.15, 6.78, 6.13, 6.50, 5.10, 7.10, 6.42, 7.42, 5.05, 5.48, 5.25, 4.68, 6.93, 6.13, 5.06, 4.87)
-hist(shrew.mass, xlab = "Mass (g)", main = "Mass of Cryptotis parva")
+hist(shrew.mass, xlab = "Mass (g)", main = "")
 ```
 It seems like there are two separate distributions because of the two peaks and the dip in the distribution in the 5.5 - 6 g range. This could perhaps be due to sexual dimorphism.
 
@@ -26,8 +26,6 @@ mean(shrew.mass)
 iii. Calculate the sample variance and standard deviation
 ```{r}
 var(shrew.mass)
-```
-```{r}
 sd(shrew.mass)
 ```
 
@@ -64,16 +62,10 @@ Salamander JSF 86 has the longest snout-to-vent length and JSF 120 has the short
 ii. For SVL, do the following for each of male and female salamanders seperately: a. Calculate the mean, b. Calculate the
 standard deviation
 ```{r}
-mean(sallys$SVL[sallys$Gender=="F"])
-```
-```{r}
 mean(sallys$SVL[sallys$Gender=="M"])
-```
-```{r}
-sd(sallys$SVL[sallys$Gender=="F"])
-```
-```{r}
 sd(sallys$SVL[sallys$Gender=="M"])
+mean(sallys$SVL[sallys$Gender=="F"])
+sd(sallys$SVL[sallys$Gender=="F"])
 ```
 
 iii. Construct histograms for the mass of each of male and female
@@ -81,11 +73,11 @@ salamanders. Do you think there is sexual dimorphism in this
 species? Explain.
 ```{r}
 sal.fem=filter(sallys, Gender=="F")
-hist(sal.fem$SVL, xlab = "Snout-to-Vent Length", main = "Female Salamander Snout-to-Vent Length")
+hist(sal.fem$SVL, xlab = "Snout-to-Vent Length", main = "Female Salamanders")
 ```
 ```{r}
 sal.male=filter(sallys, Gender=="M")
-hist(sal.male$SVL, xlab = "Snout-to-Vent Length", main = "Male Salamander Snout-to-Vent Length")
+hist(sal.male$SVL, xlab = "Snout-to-Vent Length", main = "Male Salamanders")
 ```
 There doesn't seem to be huge sexual dimorphism in salamander snout-to-vent length because both sexes peak around 38 cm and are distributed over a similar range. The variance of the females is a little greater than males but not drastically.
 
