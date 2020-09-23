@@ -1,7 +1,7 @@
 ---
-title: "Lab 3"
+title: "Week 4 Lab"
 author: "Shannon Duffy"
-date: "9/15/2020"
+date: "9/23/2020"
 output: html_document
 ---
 
@@ -9,139 +9,76 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-1. The following data are masses (g) of least shrews (Cryptotis parva)
-kept in the lab for studies of nutrition: 5.28, 5.23, 5.15, 7.30, 6.29, 4.86, 6.05, 6.85, 4.75, 6.35, 6.15, 5.50, 6.30, 6.10, 4.05, 6.00, 5.50, 4.80, 5.00, 5.15, 6.78, 6.13, 6.50, 5.10, 7.10, 6.42, 7.42, 5.05, 5.48, 5.25, 4.68, 6.93, 6.13, 5.06, 4.87. For this variable, do the following:
-i. Make an attractive histogram. Do you think there are any unusual observations in this distribution? Explain.
+1. Methicillin-resistant Staphylococcus aureus or MRSA can cause life-threatening infections. Suppose that the death rate from MRSA is 20%. Twenty patients at a hospital are diagnosed with MRSA.
+Find the following probabilities:
+i. Less than 4 in this group will die
 ```{r}
-shrew.mass=c(5.28, 5.23, 5.15, 7.30, 6.29, 4.86, 6.05, 6.85, 4.75, 6.35, 6.15, 5.50, 6.30, 6.10, 4.05, 6.00, 5.50, 4.80, 5.00, 5.15, 6.78, 6.13, 6.50, 5.10, 7.10, 6.42, 7.42, 5.05, 5.48, 5.25, 4.68, 6.93, 6.13, 5.06, 4.87)
-hist(shrew.mass, xlab = "Mass (g)", main = "")
+pbinom(3, 20, 0.2)
 ```
-It seems like there are two separate distributions because of the two peaks and the dip in the distribution in the 5.5 - 6 g range. This could perhaps be due to sexual dimorphism.
-
-ii. Calculate the sample mean
+ii. Between 3 and 6 (inclusive of 3 and 6) will die
 ```{r}
-mean(shrew.mass)
+sum(dbinom(3:6, 20, 0.2))
 ```
-
-iii. Calculate the sample variance and standard deviation
+iii. More than 1 will die
 ```{r}
-var(shrew.mass)
-sd(shrew.mass)
+1-pbinom(1,20,0.2)
 ```
 
-iv. Calculate the sample skew
+2. The V1 Flying Bomb (aka Buzzbomb) was a precursor of the modern cruise missile and was used by Germany in WWII to bomb
+England. Historians have analyzed the intensity of bombing in
+England and found that each 0.25-km2 area in London received an average of 0.929 bomb strikes during the war. Assuming that the bombing was done randomly over space, how many of the 550 0.25-km2regions of England would you expect to have had been hit by two or more bombs?
 ```{r}
-library(e1071)
-skewness(shrew.mass)
+(1-ppois(1,0.929))*550
 ```
 
-v. Calculate the sample kurtosis
+3. Assume that the mean number of frog calls heard per hour when conducting a swamp survey is 2.2. If frogs call randomly through the night, what is the chance that a certain hour has no calls at all? Now, determine the chance that all six hours of a typical 6-hour survey would be completely silent (thus boring you out of your skull) assuming that frog calling is independent from one hour to the next.
 ```{r}
-kurtosis(shrew.mass)
+(dpois(0,2.2))^6
 ```
 
-vi. (Extra computation practice) Use a single R command to take
-the square root of the sum of these numbers.
+4. You read that the rate of albinism in wild hogs is 20%. How unusual would it be to find 10 or more albino hogs in a sample 25? Express as a percentage.
 ```{r}
-sqrt(sum(shrew.mass))
+1-pbinom(9, 25, .20)
 ```
 
-2. Find the data set named sallys.csv at Moodle. This data set includes information for salamanders studied by Ziemba et al. (2016).
-Bring these data into R and complete the following tasks.
+5. Imagine that the probability of infection with rust fungus is 40% in a plant population. You go out and sample five plants at a time (because this is how many fit into your bucket) to look for infected individuals.
+i. Make a nice graph to depict the probabilities of having 0, 1,…, 5 infected individuals in a sample.
 ```{r}
-library(dplyr)
-setwd("~/Documents/github/BIO320/BIO320")
-sallys=read.csv("sallys.csv", header = TRUE)
+barplot(dbinom(0:5,5, 0.4), names.arg = c(0:5),
+        xlab = "Plants with fungus",
+        ylab = "Probability")
+abline(h=0)
 ```
-i. Sort the data set by snout-to-vent length (SVL). Which salamander has the largest SVL? Which has the smallest?
+ii. What is the probability of obtaining 3 or more infected individuals in a group of 5?
 ```{r}
-arrange(sallys, desc(SVL))
+1-pbinom(2, 5, 0.4)
 ```
-Salamander JSF 86 has the longest snout-to-vent length and JSF 120 has the shortest.
-
-ii. For SVL, do the following for each of male and female salamanders seperately: a. Calculate the mean, b. Calculate the
-standard deviation
+problems for lab 4 2
+6. The heart rate of the European common shrew, Sorex araneus, has been clocked at an average rate 528 beats per minute with a standard deviation of 55 beats per minute. Data from a wild population suggested a normal distribution for this random variable. You measure the heart rate of an American common shrew, Sorex cinereus at 480 BPM. How unlikely would this be if the distribution of heart rates for S. cinereus was the same as for S. araneus?
+i. How unusually low would that be?
 ```{r}
-mean(sallys$SVL[sallys$Gender=="M"])
-sd(sallys$SVL[sallys$Gender=="M"])
-mean(sallys$SVL[sallys$Gender=="F"])
-sd(sallys$SVL[sallys$Gender=="F"])
+pnorm(480, 528, 55)
 ```
-
-iii. Construct histograms for the mass of each of male and female
-salamanders. Do you think there is sexual dimorphism in this
-species? Explain.
+ii. How unusual period (high or low) would that be? (That is, how unusually far from the mean is this?)
 ```{r}
-sal.fem=filter(sallys, Gender=="F")
-hist(sal.fem$SVL, xlab = "Snout-to-Vent Length", main = "Female Salamanders")
-```
-```{r}
-sal.male=filter(sallys, Gender=="M")
-hist(sal.male$SVL, xlab = "Snout-to-Vent Length", main = "Male Salamanders")
-```
-There doesn't seem to be huge sexual dimorphism in salamander snout-to-vent length because both sexes peak around 38 cm and are distributed over a similar range. The variance of the females is a little greater than males but not drastically.
-
-iv. Use a single line of R code to determine the number of salamanders that are female, over 0.8 g in mass, and under 40 mm in
-SVL.
-```{r}
-nrow(filter(sallys, Gender=="F", Mass>0.8, SVL<40))
+pnorm(480, 528, 55)*2
+(1-pnorm(576, 528, 55)) + pnorm(480, 528, 55)
 ```
 
-v. Use a single line of R code to sort this dataframe by mass and
-save the sorted dataframe as “sallys.new”.
+7. Last week you calculated the mass of a bunch of least shrews at 5.759 g with a standard deviation of 0.848 g. Assume that the distribution of mass in this species is normal.
+i. What is the chance of observing a shrew in this population with a mass above 6 g?
 ```{r}
-sallys.new=arrange(sallys,desc(Mass))
+1-pnorm(6, 5.759, 0.848)
 ```
-
-3. Find the data set named bp.csv in the supplemental materials.
-This data set includes blood pressure measurements taken at the
-arm and ankle for 948 patients (Gong et al. 2015). Bring these data into R and complete the following tasks.
+ii. What is the chance of finding a shrew weighing less than 4 g?
 ```{r}
-setwd("~/Documents/github/BIO320/BIO320")
-bp=read.csv("bp.csv", header = TRUE)
+pnorm(4, 5.759, 0.848)
 ```
-
-i. For systolic blood pressure taken at the right arm (variable
-SBPRA), summarize the following for each of male (code=1) and
-female (code=2) patients:
-a. Sample size,
+iii. What is the chance of finding a shrew weighing between 5 and 6 g?
 ```{r}
-nrow(filter(bp, Sex=="1"))
+pnorm(6, 5.759, 0.848)-pnorm(5, 5.759, 0.848)
 ```
+iv. What is the weight that delimits the upper 2.5% of the distribution of masses? That is, what is the weigh above which you are only 2.5% likely to find any shrews?
 ```{r}
-nrow(filter(bp, Sex=="2"))
+qnorm(0.975, 5.759, 0.848)
 ```
-
-b. Median, and
-```{r}
-median(bp$SBPRA[bp$Sex=="1"])
-```
-```{r}
-median(bp$SBPRA[bp$Sex=="2"])
-```
-
-c. Interquartile length
-```{r}
-quantile(bp$SBPRA[bp$Sex=="1"], 0.75) - quantile(bp$SBPRA[bp$Sex=="1"], 0.25)
-```
-```{r}
-quantile(bp$SBPRA[bp$Sex=="2"], 0.75) - quantile(bp$SBPRA[bp$Sex=="2"], 0.25)
-```
-
-ii. Construct histograms for the systolic blood pressure taken at the left ankle (variable SBPLN) for each of male and female patients.
-```{r}
-bp.male=filter(bp, Sex=="1")
-hist(bp.male$SBPLN, xlab = "Systolic Blood Pressure Taken at the Left Ankle", main = "Systolic Blood Pressure for Males")
-```
-```{r}
-bp.fem=filter(bp, Sex=="2")
-hist(bp.fem$SBPLN, xlab = "Systolic Blood Pressure Taken at the Left Ankle", main = "Systolic Blood Pressure for Females")
-```
-
-iii. Construct a boxplot comparing the systolic blood pressure
-taken at the left arm (SBPLA) and systolic blood pressure taken
-at the left ankle (SBPLN). How would you characterize any differences that you see?
-```{r}
-boxplot(bp$SBPRA, bp$SBPLN, names = expression("Right Arm", "Left Ankle"), main= "Systolic Blood Pressure", ylab="Systolic Blood Pressure")
-```
-It appears the measurements taken at the left ankle have a higher median and greater variance with potentially more outliers than the measurements taken at the right arm. This indicates that measurements taken at the left ankle are less precise than those taken at the right arm.
